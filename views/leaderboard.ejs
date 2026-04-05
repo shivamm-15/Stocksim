@@ -1,0 +1,45 @@
+<%- include('partials/header', { title: 'Leaderboard' }) %>
+
+<div class="container">
+  <div class="page-title">Leaderboard 🏆</div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Cash Balance</th>
+        <th>Portfolio Value</th>
+        <th>Net Worth</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% leaderboard.forEach((user, index) => { %>
+        <tr class="<%= user.isCurrentUser ? 'current-user' : '' %>">
+          <td>
+            <% if (index === 0) { %>
+              <span class="rank-1">🥇</span>
+            <% } else if (index === 1) { %>
+              <span class="rank-2">🥈</span>
+            <% } else if (index === 2) { %>
+              <span class="rank-3">🥉</span>
+            <% } else { %>
+              #<%= index + 1 %>
+            <% } %>
+          </td>
+          <td>
+            <strong><%= user.name %></strong>
+            <% if (user.isCurrentUser) { %>
+              <span style="font-size:0.75rem; color:#888; margin-left:6px">(You)</span>
+            <% } %>
+          </td>
+          <td>₹<%= Number(user.balance).toLocaleString('en-IN') %></td>
+          <td>₹<%= Number(user.portfolioValue).toLocaleString('en-IN') %></td>
+          <td><strong>₹<%= Number(user.netWorth).toLocaleString('en-IN') %></strong></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,76 @@
+<%- include('partials/header', { title: 'Portfolio' }) %>
+
+<div class="container">
+  <div class="page-title">My Portfolio</div>
+
+  <div class="summary-row">
+    <div class="summary-card">
+      <p>Cash Balance</p>
+      <h3>₹<%= Number(user.balance).toLocaleString('en-IN') %></h3>
+    </div>
+    <div class="summary-card">
+      <p>Total Invested</p>
+      <h3>₹<%= Number(totalInvested).toLocaleString('en-IN') %></h3>
+    </div>
+    <div class="summary-card">
+      <p>Current Value</p>
+      <h3>₹<%= Number(totalCurrent).toLocaleString('en-IN') %></h3>
+    </div>
+    <% var pnlClass = totalPnl >= 0 ? 'profit' : 'loss'; %>
+    <div class="summary-card <%= pnlClass %>">
+      <p>Total P&L</p>
+      <h3><%= totalPnl >= 0 ? '+' : '' %>₹<%= Number(totalPnl).toLocaleString('en-IN') %></h3>
+    </div>
+    <div class="summary-card">
+      <p>Net Worth</p>
+      <h3>₹<%= Number(netWorth).toLocaleString('en-IN') %></h3>
+    </div>
+  </div>
+
+  <% if (portfolio.length === 0) { %>
+    <div class="card empty-state">
+      <p>You don't own any stocks yet.</p>
+      <a class="btn btn-primary" href="/stocks/search">Start Trading</a>
+    </div>
+  <% } else { %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Qty</th>
+          <th>Avg Buy</th>
+          <th>Current Price</th>
+          <th>Invested</th>
+          <th>Current Value</th>
+          <th>P&L</th>
+          <th>P&L %</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% portfolio.forEach(stock => { %>
+          <% var rowPnlClass = stock.pnl >= 0 ? 'profit' : 'loss'; %>
+          <tr>
+            <td><strong><%= stock.symbol %></strong></td>
+            <td><%= stock.quantity %></td>
+            <td>₹<%= stock.avgBuyPrice.toFixed(2) %></td>
+            <td><%= stock.currentPrice ? '₹' + stock.currentPrice.toFixed(2) : 'N/A' %></td>
+            <td>₹<%= Number(stock.investedValue).toLocaleString('en-IN') %></td>
+            <td><%= stock.currentValue ? '₹' + Number(stock.currentValue).toLocaleString('en-IN') : 'N/A' %></td>
+            <td class="<%= rowPnlClass %>">
+              <%= stock.pnl !== null ? (stock.pnl >= 0 ? '+' : '') + '₹' + stock.pnl : 'N/A' %>
+            </td>
+            <td class="<%= rowPnlClass %>">
+              <%= stock.pnlPercent !== null ? stock.pnlPercent + '%' : 'N/A' %>
+            </td>
+            <td>
+              <a class="btn btn-danger btn-sm" href="/stocks/sell?symbol=<%= stock.symbol %>">Sell</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,51 @@
+<%- include('../partials/header', { title: 'Buy ' + symbol }) %>
+
+<div class="container">
+  <div class="page-title">Buy <%= symbol %></div>
+
+  <div class="form-card">
+    <div class="summary-row" style="margin-bottom:20px">
+      <div class="summary-card">
+        <p>Current Price</p>
+        <h3>₹<%= price.toFixed(2) %></h3>
+      </div>
+      <div class="summary-card">
+        <p>Your Balance</p>
+        <h3>₹<%= Number(user.balance).toLocaleString('en-IN') %></h3>
+      </div>
+    </div>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/stocks/buy">
+      <input type="hidden" name="symbol" value="<%= symbol %>" />
+      <input type="hidden" name="price" value="<%= price %>" />
+      <input type="hidden" id="stockPrice" value="<%= price %>" />
+
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" name="quantity" id="qtyInput" min="1" required placeholder="Enter number of shares"/>
+      </div>
+
+      <div class="summary-card" style="margin-bottom:20px">
+        <p>Total Cost</p>
+        <h3>₹<span id="total">0.00</span></h3>
+      </div>
+
+      <button class="btn btn-success" type="submit">Confirm Buy</button>
+      <a class="btn btn-primary" style="margin-left:10px" href="/stocks/search">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById('qtyInput').addEventListener('input', function() {
+    var qty = parseInt(this.value) || 0;
+    var price = parseFloat(document.getElementById('stockPrice').value);
+    document.getElementById('total').textContent = (qty * price).toFixed(2);
+  });
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>Dashboard — StockSim</title></head>
+<body>
+<%- include('partials/header', { title: 'Dashboard' }) %>
+
+<div class="container">
+  <div class="page-title">Welcome back, <%= user.name %> 👋</div>
+
+  <div class="summary-row">
+    <div class="summary-card">
+      <p>Available Balance</p>
+      <h3>₹<%= Number(user.balance).toLocaleString('en-IN') %></h3>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:14px; color:#1B3A6B;">Popular NSE Stocks</h3>
+    <div class="stock-chips">
+      <a class="chip" href="/stocks/search">RELIANCE</a>
+      <a class="chip" href="/stocks/search">TCS</a>
+      <a class="chip" href="/stocks/search">INFY</a>
+      <a class="chip" href="/stocks/search">HDFCBANK</a>
+      <a class="chip" href="/stocks/search">WIPRO</a>
+      <a class="chip" href="/stocks/search">ICICIBANK</a>
+      <a class="chip" href="/stocks/search">BAJFINANCE</a>
+      <a class="chip" href="/stocks/search">TATAMOTORS</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+  <hr/>
+</body>
+</html>

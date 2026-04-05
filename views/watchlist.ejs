@@ -1,0 +1,53 @@
+<%- include('partials/header', { title: 'Watchlist' }) %>
+
+<div class="container">
+  <div class="page-title">My Watchlist</div>
+
+  <div class="card" style="max-width:400px; margin-bottom:24px">
+    <form method="POST" action="/watchlist/add">
+      <div class="form-group">
+        <label>Add Stock Symbol</label>
+        <input type="text" name="symbol" placeholder="e.g. BAJFINANCE" required/>
+      </div>
+      <button class="btn btn-primary" type="submit">Add to Watchlist</button>
+    </form>
+  </div>
+
+  <% if (watchlist.length === 0) { %>
+    <div class="card empty-state">
+      <p>Your watchlist is empty. Add symbols above to track them.</p>
+    </div>
+  <% } else { %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Company</th>
+          <th>Current Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% watchlist.forEach(stock => { %>
+          <tr>
+            <td><strong><%= stock.symbol %></strong></td>
+            <td style="color:#555"><%= stock.companyName %></td>
+            <td><%= stock.price ? '₹' + Number(stock.price).toFixed(2) : 'N/A' %></td>
+            <td>
+              <a class="btn btn-success btn-sm" 
+                href="/stocks/buy?symbol=<%= stock.symbol %>&price=<%= stock.price || 0 %>">
+                Buy
+              </a>
+              <form method="POST" action="/watchlist/remove" style="display:inline; margin-left:8px">
+                <input type="hidden" name="symbol" value="<%= stock.symbol %>" />
+                <button class="btn btn-danger btn-sm" type="submit">Remove</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

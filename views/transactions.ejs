@@ -1,0 +1,43 @@
+<%- include('partials/header', { title: 'Transaction History' }) %>
+
+<div class="container">
+  <div class="page-title">Transaction History</div>
+
+  <% if (transactions.length === 0) { %>
+    <div class="card empty-state">
+      <p>No transactions yet.</p>
+      <a class="btn btn-primary" href="/stocks/search">Start Trading</a>
+    </div>
+  <% } else { %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date & Time</th>
+          <th>Symbol</th>
+          <th>Type</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% transactions.forEach(t => { %>
+          <tr>
+            <td style="color:#888; font-size:0.82rem">
+              <%= new Date(t.created_at).toLocaleString('en-IN') %>
+            </td>
+            <td><strong><%= t.symbol %></strong></td>
+            <td>
+              <span class="badge-<%= t.type %>"><%= t.type.toUpperCase() %></span>
+            </td>
+            <td><%= t.quantity %></td>
+            <td>₹<%= Number(t.price_at_time).toFixed(2) %></td>
+            <td>₹<%= Number(t.total_amount).toLocaleString('en-IN') %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>
