@@ -6,7 +6,6 @@ const { createUser, findUserByEmail } = require('../models/usermodel');
 const getRegister = (req, res) => {
   res.render('auth/register', { error: null });
 };
-
 // Handle register form submit
 const postRegister = async (req, res) => {
   try {
@@ -23,11 +22,10 @@ const postRegister = async (req, res) => {
 
     await createUser(name, email, passwordHash);
     res.redirect('/auth/login');
-  } catch (err) {
-  console.error('LOGIN ERROR:', err.message);
-  res.render('auth/login', { error: err.message });
+  }catch (err) {
+  console.error(err);
+  res.render('auth/login', { error: 'Something went wrong' });
 }
-  
 };
 
 // Show login page
