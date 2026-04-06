@@ -24,9 +24,10 @@ const postRegister = async (req, res) => {
     await createUser(name, email, passwordHash);
     res.redirect('/auth/login');
   } catch (err) {
-    console.error(err);
-    res.render('auth/register', { error: 'Something went wrong' });
-  }
+  console.error('LOGIN ERROR:', err.message);
+  res.render('auth/login', { error: err.message });
+}
+  
 };
 
 // Show login page
