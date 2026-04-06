@@ -17,8 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Test route
 app.get('/', (req, res) => {
-  res.send('StockSim server is running');
-});
+res.redirect('/auth/login');});
 
 // Start server
 const PORT = process.env.PORT || 3000;
